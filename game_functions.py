@@ -68,6 +68,24 @@ def update_bullets(bullets):
         
     #让最近绘制的屏幕可见        
     pygame.display.flip()
+
+def check_fleet_edges(ai_settings, aliens):
+    """有外星人到达边缘时采取相应的措施"""
+    for alien in aliens.sprites():
+        if alien.check_edges():
+            change_fleet_direction(ai_settings, aliens)
+            break
+        
+def change_fleet_direction(ai_settings, aliens):
+    """将整群外星人下移，并改变他们的方向"""
+    for alien in aliens.sprites():
+        alien.rect.y += ai_settings.fleet_drop_speed
+    ai_settings.fleet_direction *= -1
+    
+def update_aliens(ai_settings, aliens):
+    """检查是否有外星人位于屏幕边缘，并更新外星人的位置"""
+    check_fleet_edges(ai_settings,aliens)
+    aliens.update()
  
 def get_number_aliens_x(ai_settings, alien_width):
     """计算每行可容纳多少外星人"""
